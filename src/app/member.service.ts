@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Member } from './member';
@@ -10,6 +10,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class MemberService {
   private memberUrl = 'api/members';
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
   constructor(
     private http: HttpClient,
     private messageService: MessageService
@@ -27,6 +30,13 @@ export class MemberService {
     return this.http.get<Member>(url).pipe(
       tap((_) => this.log(`Get employee list data (id=${id})`)),
       catchError(this.handleError<Member>(`getMember id=${id}`))
+    );
+  }
+
+  updateMember(member: Member): Observable<any> {
+    return this.http.put(this.memberUrl, member, this.httpOptions).pipe(
+      tap((_) => this.log(`Change employee data (id=${member.id})`)),
+      catchError(this.handleError<any>('updateMember'))
     );
   }
 
