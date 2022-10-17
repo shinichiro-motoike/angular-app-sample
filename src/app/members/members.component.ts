@@ -21,4 +21,12 @@ export class MembersComponent implements OnInit {
       .getMembers() // Observable
       .subscribe((members) => (this.members = members));
   }
+
+  add(name: string): void {
+    name = name.trim(); // 前後の空白を削除
+    if (!name) return;
+    this.memberService.addMember({ name } as Member).subscribe((member) => {
+      this.members.push(member);
+    });
+  }
 }
