@@ -1,4 +1,10 @@
 <h2>list</h2>
+<div>
+  <label>
+    <input type="text" #memberName />
+  </label>
+  <button (click)="add(memberName.value); memberName.value = ''">add</button>
+</div>
 <ul class="members">
   <li *ngFor="let member of members">
     <a routerLink="/detail/{{ member.id }}">
